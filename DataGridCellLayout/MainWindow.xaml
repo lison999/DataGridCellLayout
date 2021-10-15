@@ -1,0 +1,74 @@
+﻿<Window x:Class="DataGridCellLayout.MainWindow"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Tongyu.Smart.Client.Controls"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        Dialog:DialogParticipation.Register="{Binding}"
+        xmlns:prism="http://prismlibrary.com/"                
+        mc:Ignorable="d"
+        x:Name="orderListWin"
+        Height="600" Width="900" MinHeight="550" MinWidth="750"     
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+        WindowStartupLocation="CenterScreen"
+        Title="MainWindow" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Button Click="Button_Click" Content="CellLayout"/>
+            <DataGrid Grid.Row="1"
+                                    x:Name="_parentOrders"
+                                    IsReadOnly="True"
+                                    ItemsSource="{Binding Orders}"                                   
+                                    AutoGenerateColumns="False"
+                                    CanUserAddRows="False"
+                                    HeadersVisibility="All"
+                                    GridLinesVisibility="Horizontal"          
+                                    FrozenColumnCount="1"      
+                                    CanUserReorderColumns="False"
+                                    RowHeight="20"
+                                    SelectionUnit="FullRow"
+                                    SelectionMode="Single"                                   
+                                    local:DataGridCellLayout.UseContentControls="{Binding UseCellControls,Mode=TwoWay}"
+                                     >
+            <DataGrid.Columns>
+              
+                <DataGridTemplateColumn Header="订单编号">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <local:UseContentControl DisplayMemberPath="OrderId" >
+                                <local:UseContentControl.Content>
+                                    <Grid>
+                                        <TextBlock Text="{Binding OrderId}"/>
+                                    </Grid>
+                                </local:UseContentControl.Content>
+                            </local:UseContentControl>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="客户ID">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <local:UseContentControl DisplayMemberPath="ClientId">
+                                <Grid>
+                                    <TextBlock Text="{Binding ClientId}" />
+                                </Grid>
+                            </local:UseContentControl>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>            
+              
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="ContentRendered">
+            <i:InvokeCommandAction Command="{Binding ParentDataGridLoadedCommand}" CommandParameter="{Binding ElementName=orderListWin}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+</Window>
